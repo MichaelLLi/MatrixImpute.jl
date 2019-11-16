@@ -181,7 +181,7 @@ function MatrixDeriv2(A,B,W,S,k,γ,M,j)
     ∇obj = zeros(k,p)
     nsquare = sqrt(n * m)
     mnew = min(4*p,m)
-    nnew = min(max(100,Int(round(nsquare * log(nsquare) * k * 2^j / (8 * mnew * (1-M)),0))),n)
+    nnew = min(max(100,Int(round(nsquare * log(nsquare) * k * 2^j / (8 * mnew * (1-M))))),n)
     samplen = sample(1:n,nnew,replace=false)
     samplem = sample(1:m,mnew,replace=false)
     X = B[samplem,:]*S'
