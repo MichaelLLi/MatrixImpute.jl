@@ -202,7 +202,7 @@ function MatrixDeriv2(A,B,W,S,k,γ,M,j)
     Btemp1 = zeros(p,nnew)
     Btemp2 = zeros(k,nnew)
     for i = 1:nnew
-        Btemp1[:,i] = B[samplep[Wpar[i].==1],:]' * objpar[i]
+        Btemp1[:,i] = B[samplem[Wpar[i].==1],:]' * objpar[i]
         Btemp2[:,i] = X[Wpar[i].==1,:]' * objpar[i]
     end
     ∇obj = @distributed (+) for i = 1:nnew
