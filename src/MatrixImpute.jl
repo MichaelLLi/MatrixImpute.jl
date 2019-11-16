@@ -199,8 +199,8 @@ function MatrixDeriv2(A,B,W,S,k,γ,M,j)
     println("Starting DerivCalc")
     println("We chose $nnew n")
     println("We chose $mnew m")
-    Btemp1 = Array{Float64}(p,nnew)
-    Btemp2 = Array{Float64}(k,nnew)
+    Btemp1 = zeros(p,nnew)
+    Btemp2 = zeros(k,nnew)
     for i = 1:nnew
         Btemp1[:,i] = B[samplep[Wpar[i].==1],:]' * objpar[i]
         Btemp2[:,i] = X[Wpar[i].==1,:]' * objpar[i]
