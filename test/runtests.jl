@@ -26,5 +26,5 @@ A = allowmissing(A)
 A[rand(Float64,n,m).>0.05].=missing
 t1 = time_ns()
 Uopt, Sopt = MatrixImpute.Impute(A,k,γ = 10000, B = B')
-println(mean(abs.(Uopt*Sopt-Afull)./abs.(Afull)))
+println(mean(abs.(Uopt*Sopt*B-Afull)./abs.(Afull)))
 println("Completed Test for Matrix Completion with Side Information")

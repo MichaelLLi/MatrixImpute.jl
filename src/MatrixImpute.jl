@@ -5,6 +5,7 @@ using LinearAlgebra: pinv, svd, norm, I, dot, diagm
 using StatsBase: sample
 using Arpack: svds
 using DataFrames: allowmissing
+using Statistics: mean
 
 
 
