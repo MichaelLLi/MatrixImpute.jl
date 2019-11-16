@@ -1,6 +1,6 @@
 # MatrixImpute
  
-This is the Julia Repository for general low-rank Matrix Completion (with and without Side Information). The main interface is:
+This is the Julia Repository for general low-rank Matrix Completion (with/without Side Information). The main interface is:
 
 `Impute(A,k;method=:fastImpute,B=nothing, kwargs)`
 
