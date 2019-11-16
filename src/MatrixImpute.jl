@@ -11,8 +11,8 @@ using DataFrames: allowmissing
 function Impute(A,k;method=:fastImpute,γ = 10e4, λ=0.1, B=nothing, lr= 1/64)
 
 if method == :fastImpute
-    Aopt = fastImpute(A,k,γ,lr,B)
-    return Aopt
+    Uopt, Sopt = fastImpute(A,k,γ,lr,B)
+    return Uopt, Sopt
 else
     error("Method not yet implemented!")
 end
@@ -41,9 +41,11 @@ function fastImpute(A,k,γ,lr,B)
         for sc in startchunk
             UoptT, SoptT = fastImputeInner(A[:,sc:min(sc+chunk-1,p)],k,γ,lr,B)
             Aopt[:,sc:min(sc+chunk-1,p)] = UoptT * SoptT
-            Sopt[:,sc:min(sc+chunk-1,p)] = SoptT
         end
-        return Aopt
+        output = svds(Aopt, nsv = k)
+        Soptt = diagm(output[1].S)*output[1].Vt
+        scale = norm(Soptt)
+        return output[1].U .* scale, Soptt ./ scale
     else
         if m != size(B)[1]
             error("Sizes of A and B must match")
