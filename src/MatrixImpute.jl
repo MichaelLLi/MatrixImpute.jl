@@ -1,7 +1,7 @@
 module MatrixImpute
 
 using Distributed: pmap, @distributed, @everywhere
-using LinearAlgebra: pinv, svd, norm, I, dot
+using LinearAlgebra: pinv, svd, norm, I, dot, diagm
 using StatsBase: sample
 using Arpack: svds
 using DataFrames: allowmissing
