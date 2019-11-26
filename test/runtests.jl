@@ -1,5 +1,5 @@
-n=10^4
-m=10^4
+n=10^5
+m=10^3
 k=5
 U=rand(Float64,n,k)
 V=rand(Float64,k,m)
@@ -8,7 +8,8 @@ A=copy(Afull)
 A = allowmissing(A)
 A[rand(Float64,n,m).>0.05].=missing
 t1 = time_ns()
-Uopt, Sopt = MatrixImpute.Impute(A,k,γ = 10000)
+Uopt, Sopt = Impute(A,k,γ = 10000)
+println((time_ns()-t1)/1e9)
 println(mean(abs.(Uopt*Sopt-Afull)./abs.(Afull)))
 println("Completed Test for Matrix Completion without Side Information")
 

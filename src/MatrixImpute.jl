@@ -39,14 +39,19 @@ function fastImpute(A,k,γ,lr,B)
         Sopt = zeros(Float64,k,p)
         Aopt = zeros(Float64,n,p)
         t=0
-        for sc in startchunk
-            UoptT, SoptT = fastImputeInner(A[:,sc:min(sc+chunk-1,p)],k,γ,lr,B)
-            Aopt[:,sc:min(sc+chunk-1,p)] = UoptT * SoptT
+        if nchunks>1
+            for sc in startchunk
+                UoptT, SoptT = fastImputeInner(A[:,sc:min(sc+chunk-1,p)],k,γ,lr,B)
+                Aopt[:,sc:min(sc+chunk-1,p)] = UoptT * SoptT
+            end
+            output = svds(Aopt, nsv = k)
+            Soptt = diagm(output[1].S)*output[1].Vt
+            scale = norm(Soptt)
+            return output[1].U .* scale, Soptt ./ scale
+        else
+            Uopt, Sopt = fastImputeInner(A,k,γ,lr,B)
+            return Uopt, Sopt
         end
-        output = svds(Aopt, nsv = k)
-        Soptt = diagm(output[1].S)*output[1].Vt
-        scale = norm(Soptt)
-        return output[1].U .* scale, Soptt ./ scale
     else
         if m != size(B)[1]
             error("Sizes of A and B must match")
@@ -155,7 +160,7 @@ function MatrixDeriv(A,W,S,k,γ,M,j)
     samplem=sample(1:m,mnew,replace=false)
     obj=0
     SmallInv = function (Xrow, Wrow, Arow)
-        return (I- Xrow * inv(I / γ + Xrow' * Xrow) * Xrow') * Arow
+        return Arow - Xrow * (inv(I / γ + Xrow' * Xrow) * (Xrow' * Arow))
     end
     Wpar = Array{Float64}[W[samplen[i],samplem] for i=1:nnew]
     Xpar = Array{Float64}[S[:,samplem[Wpar[i].==1]]' for i=1:nnew]
@@ -190,7 +195,7 @@ function MatrixDeriv2(A,B,W,S,k,γ,M,j)
     X = B[samplem,:]*S'
     obj = 0
     SmallInv = function (Xrow, Wrow, Arow)
-        return (I- Xrow*inv(I/γ+Xrow'*Xrow)*Xrow')*Arow
+        return Arow - Xrow * (inv(I / γ + Xrow' * Xrow) * (Xrow' * Arow))
     end
     Wpar = Array{Float64}[W[samplen[i],samplem] for i=1:nnew]
     Xpar = Array{Float64}[X[Wpar[i].==1,:] for i=1:nnew]
