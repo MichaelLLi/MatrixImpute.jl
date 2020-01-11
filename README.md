@@ -6,7 +6,7 @@ This is the Julia Repository for general low-rank Matrix/Tensor Completion (with
 
 
 - `A` is the Matrix of size `n x m`/ Tensor of size `n x m x p` with missing entries. The entries missing should be of type Missing.
-- `k` is the desired integer rank of fitting. For Tensors, this is currently assumed to be the canonical CP rank. 
+- `k` is the desired integer rank of fitting. For Tensors, this is currently assumed to be the canonical CP/Kruskal rank. 
 - `kwargs` are named optional arguments to specify hyperparameters for each method. For the specific names of the hyperparameters, please see the methods listed below.
 - `method` is the keyword for specifying the low rank imputation method. Currently the following methods are implemented:
    - fastImpute ([Fast Exact Matrix Completion: A Unifying Optimization Framework](https://arxiv.org/abs/1910.09092)). 
