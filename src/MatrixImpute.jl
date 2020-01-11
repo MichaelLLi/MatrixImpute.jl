@@ -6,7 +6,6 @@ using StatsBase: sample
 using Arpack: svds
 using DataFrames: allowmissing
 using Statistics: mean
-using TensorToolbox: ktensor
 
 
 
