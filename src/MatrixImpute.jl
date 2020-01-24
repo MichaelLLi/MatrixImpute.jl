@@ -95,7 +95,7 @@ function fastImputeInner(A,k,γ,lr,B)
     println("Preprocessing Complete")
     A[ismissing.(A)] .= 0
     if M<0.5 && B == nothing
-        output = svds(A,nsv=5)
+        output = svds(A,nsv = k)
         S = diagm(output[1].S)*output[1].Vt
     else
         S = rand(k,p)
